@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corn Tech Bignona - Agrotech & Maïs Frais Premium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4', 100: '#dcfce7', 500: '#16a34a',
+                            700: '#15803d', 800: '#166534', 900: '#0f3a1e', 950: '#052010',
+                        },
+                        gold: {
+                            300: '#fde047', 400: '#facc15', 500: '#eab308',
+                            600: '#ca8a04', 700: '#a16207',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card { background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border: 1px solid rgba(22,163,74,0.15); }
+        .dark .glass-card { background: rgba(15,58,30,0.75); backdrop-filter: blur(12px); border: 1px solid rgba(234,179,8,0.2); }
+        .gold-gradient-text { background: linear-gradient(135deg, #eab308 0%, #ca8a04 50%, #fef08a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .emerald-gradient { background: linear-gradient(135deg, #0f3a1e 0%, #15803d 100%); }
+        .hero-bg {
+            background-image: linear-gradient(rgba(5,32,16,0.82), rgba(15,58,30,0.90)), url('https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&q=80&w=1600');
+            background-size: cover; background-position: center;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f3a1e; }
+        ::-webkit-scrollbar-thumb { background: #15803d; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #eab308; }
+
+        @media (min-width: 1024px) {
+            .hero-title { font-size: 3.25rem !important; line-height: 1.15 !important; }
+            .kpi-value { font-size: 1.75rem !important; }
+            .section-pad { padding-top: 5rem !important; padding-bottom: 5rem !important; }
+        }
+        .card-equal { display: flex; flex-direction: column; justify-content: space-between; height: 100%; }
+        .card-equal > div:first-child { flex: 1; }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed; bottom: 24px; right: 24px; z-index: 100;
+            padding: 14px 20px; border-radius: 14px; font-weight: 600;
+            display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: translateY(100px); opacity: 0;
+            transition: all 0.35s ease;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.success { background: #10b981; color: white; }
+        .toast.error { background: #ef4444; color: white; }
+        .toast.info { background: #3b82f6; color: white; }
+    </style>
+</head>
+<body class="bg-stone-50 dark:bg-stone-950 text-stone-800 dark:text-stone-100 font-sans transition-colors duration-300">
+
+    <!-- NAVIGATION BAR -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-brand-950/90 backdrop-blur-md border-b border-gold-500/20 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-400 to-brand-700 flex items-center justify-center shadow-lg shadow-gold-500/20 ring-2 ring-gold-400/40">
+                        <i class="fa-solid fa-wheat-awn text-stone-950 text-2xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold font-serif tracking-wide block gold-gradient-text">CORN TECH</span>
+                        <span class="text-xs uppercase tracking-widest text-brand-100 font-semibold">BIGNONA • CASAMANCE</span>
+                    </div>
+                </div>
+
+                <div class="hidden lg:flex items-center space-x-8 text-sm font-medium">
+                    <a href="#produits" class="hover:text-gold-400 transition-colors">Nos Offres</a>
+                    <a href="#calculateur" class="hover:text-gold-400 transition-colors">Simulateur</a>
+                    <a href="#maturite" class="hover:text-gold-400 transition-colors">Calendrier NFT999</a>
+                    <button onclick="requestPinUnlock()" class="text-gold-400 hover:text-gold-300 transition-colors flex items-center gap-2 bg-brand-900/80 px-3.5 py-1.5 rounded-lg border border-gold-500/30">
+                        <i class="fa-solid fa-lock text-xs" id="nav-lock-icon"></i> <span id="nav-dash-label">Espace Agriculteur</span>
+                    </button>
+                </div>
+
+                <div class="hidden sm:flex items-center gap-3">
+                    <button onclick="openWhatsAppModal()" class="bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-500 hover:to-green-400 text-white font-semibold px-4 py-2.5 rounded-xl shadow-lg hover:shadow-green-500/30 transition-all transform hover:-translate-y-0.5 flex items-center gap-2 border border-green-400/30">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Commander</span>
+                    </button>
+                </div>
+
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="p-2 rounded-lg bg-brand-900 text-gold-400 hover:bg-brand-800 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden lg:hidden bg-brand-950 border-b border-gold-500/20 px-4 pt-2 pb-6 space-y-3">
+            <a href="#produits" class="block py-2 text-stone-200 hover:text-gold-400">Nos Offres</a>
+            <a href="#calculateur" class="block py-2 text-stone-200 hover:text-gold-400">Simulateur de Prix</a>
+            <a href="#maturite" class="block py-2 text-stone-200 hover:text-gold-400">Calendrier NFT999</a>
+            <button onclick="requestPinUnlock()" class="w-full text-left py-2 text-gold-400 font-semibold flex items-center justify-between">
+                <span><i class="fa-solid fa-lock mr-2" id="mobile-lock-icon"></i>Espace Agriculteur (Privé)</span>
+                <span class="text-xs bg-gold-500/20 px-2 py-0.5 rounded border border-gold-500/30">PIN 0202</span>
+            </button>
+            <div class="pt-2 border-t border-brand-800">
+                <button onclick="openWhatsAppModal()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-xl"></i> Commander par WhatsApp
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative min-h-screen hero-bg flex items-center pt-24 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-gold-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-brand-500/30 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-500/10 border border-gold-500/30 text-gold-400 text-sm font-semibold backdrop-blur-md">
+                    <i class="fa-solid fa-star text-xs"></i>
+                    <span>Excellence Agrotech Casamance • Variété NFT999</span>
+                </div>
+                
+                <h1 class="hero-title text-4xl sm:text-5xl font-extrabold font-serif text-white tracking-tight leading-tight">
+                    Le Maïs Frais <br class="hidden sm:inline"/>
+                    <span class="gold-gradient-text">Doux & Savoureux</span> de Bignona
+                </h1>
+
+                <p class="text-lg sm:text-xl text-stone-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-light">
+                    Récolté à la main au stade laiteux idéal pour une tendreté et une douceur incomparables. Livré directement du champ à vos tables et étals.
+                </p>
+
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+                    <a href="tel:+221776868625" class="glass-card px-4 py-2.5 rounded-xl flex items-center gap-3 text-white hover:border-gold-400 transition-all">
+                        <div class="w-8 h-8 rounded-lg bg-gold-500/20 flex items-center justify-center text-gold-400">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <div class="text-left">
+                            <span class="text-xs text-stone-400 block">Ligne Directe 1</span>
+                            <span class="text-sm font-bold text-gold-300">+221 77 686 86 25</span>
+                        </div>
+                    </a>
+                    <a href="tel:+221785948594" class="glass-card px-4 py-2.5 rounded-xl flex items-center gap-3 text-white hover:border-gold-400 transition-all">
+                        <div class="w-8 h-8 rounded-lg bg-gold-500/20 flex items-center justify-center text-gold-400">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <div class="text-left">
+                            <span class="text-xs text-stone-400 block">Ligne Directe 2</span>
+                            <span class="text-sm font-bold text-gold-300">+221 78 594 85 94</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                    <button onclick="openWhatsAppModal()" class="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-brand-600 hover:from-emerald-400 hover:to-brand-500 text-white font-bold text-lg px-8 py-4 rounded-2xl shadow-xl shadow-emerald-950/50 hover:shadow-emerald-500/30 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-3 border border-emerald-400/40">
+                        <i class="fa-brands fa-whatsapp text-2xl"></i>
+                        <span>Commander Votre Sac</span>
+                    </button>
+                    <a href="#calculateur" class="w-full sm:w-auto glass-card hover:bg-white/10 text-white font-semibold text-lg px-8 py-4 rounded-2xl transition-all border border-stone-500/30 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-calculator text-gold-400"></i>
+                        <span>Simuler Tarif</span>
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4 pt-6 border-t border-white/10 text-stone-300 text-sm">
+                    <div class="flex flex-col items-center lg:items-start">
+                        <span class="text-2xl font-bold text-gold-400 font-serif">100%</span>
+                        <span class="text-xs text-stone-400">Frais & Naturel</span>
+                    </div>
+                    <div class="flex flex-col items-center lg:items-start">
+                        <span class="text-2xl font-bold text-gold-400 font-serif">NFT999</span>
+                        <span class="text-xs text-stone-400">Variété Précoce</span>
+                    </div>
+                    <div class="flex flex-col items-center lg:items-start">
+                        <span class="text-2xl font-bold text-gold-400 font-serif">Express</span>
+                        <span class="text-xs text-stone-400">Livraison Bignona</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-5">
+                <div class="relative glass-card p-6 sm:p-8 rounded-3xl shadow-2xl border border-gold-500/30 text-white">
+                    <div class="absolute top-4 right-4 bg-emerald-500 text-stone-950 font-black text-xs px-3 py-1 rounded-full uppercase tracking-wider">
+                        En Stock Récolté
+                    </div>
+                    <div class="mb-6">
+                        <span class="text-xs font-semibold text-gold-400 uppercase tracking-widest block mb-1">Qualité Premium</span>
+                        <h3 class="text-2xl font-bold font-serif">Maïs Frais NFT999</h3>
+                        <p class="text-stone-300 text-sm mt-1">Épis tendres, grains bien remplis au stade laiteux doux.</p>
+                    </div>
+                    <div class="space-y-3 mb-6 bg-brand-950/60 p-4 rounded-2xl border border-brand-800">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-stone-400"><i class="fa-solid fa-location-dot text-gold-400 mr-2"></i>Origine</span>
+                            <span class="font-medium text-stone-200">Bignona, Casamance</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-stone-400"><i class="fa-solid fa-clock text-gold-400 mr-2"></i>Cycle de récolte</span>
+                            <span class="font-medium text-stone-200">65-75 Jours</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-stone-400"><i class="fa-solid fa-fire text-gold-400 mr-2"></i>Ideal Pour</span>
+                            <span class="font-medium text-stone-200">Grillades & Bouilli</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-white/10">
+                        <div>
+                            <span class="text-xs text-stone-400 block">À partir de</span>
+                            <span class="text-2xl font-extrabold text-gold-400">150 FCFA <span class="text-xs text-stone-300 font-normal">/ épi</span></span>
+                        </div>
+                        <button onclick="scrollToOffers()" class="bg-gold-500 hover:bg-gold-400 text-stone-950 font-bold px-4 py-2.5 rounded-xl text-sm transition-colors flex items-center gap-1">
+                            <span>Voir Offres</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCT CATALOG SECTION -->
+    <section id="produits" class="section-pad py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+            <span class="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-gold-400 bg-emerald-100 dark:bg-emerald-950/80 px-4 py-1.5 rounded-full inline-block border border-emerald-300 dark:border-gold-500/30">
+                Offres Spéciales Récolte
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold font-serif text-stone-900 dark:text-white">
+                Formules Directes du Champ
+            </h2>
+            <p class="text-stone-600 dark:text-stone-300">
+                Que vous soyez un particulier, un restaurateur, une grilleuse ou un marchand du Grand Marché de Bignona, choisissez l'offre adaptée à votre besoin.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+            <!-- Card 1 -->
+            <div class="card-equal bg-white dark:bg-brand-900/40 rounded-3xl p-8 border border-stone-200 dark:border-brand-800 shadow-xl hover:shadow-2xl transition-all duration-300 group hover:-translate-y-1">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-gold-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <span class="text-xs font-bold text-amber-600 dark:text-gold-400 tracking-wider uppercase block mb-1">Pack Découverte</span>
+                    <h3 class="text-2xl font-bold font-serif text-stone-900 dark:text-white mb-3">Épis au Détail</h3>
+                    <p class="text-stone-600 dark:text-stone-300 text-sm mb-6 leading-relaxed">
+                        Idéal pour la consommation familiale immédiate, les grillades du soir ou les petites réunions.
+                    </p>
+                    <ul class="space-y-3 text-sm text-stone-600 dark:text-stone-300 mb-8">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-emerald-500"></i> Minimum 10 épis</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-emerald-500"></i> Sélection très tendre</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-emerald-500"></i> Récolte du jour même</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="mb-6 pt-4 border-t border-stone-100 dark:border-brand-800">
+                        <span class="text-3xl font-extrabold text-stone-900 dark:text-white">150 FCFA</span>
+                        <span class="text-sm text-stone-500 dark:text-stone-400"> / épi</span>
+                    </div>
+                    <button onclick="orderProduct('Épis au Détail', 150, 10)" class="w-full bg-stone-900 dark:bg-brand-800 hover:bg-emerald-600 dark:hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Commander en Détail</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card-equal relative bg-gradient-to-b from-brand-900 to-brand-950 text-white rounded-3xl p-8 border-2 border-gold-400 shadow-2xl transform md:-translate-y-2">
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-gold-400 to-amber-500 text-stone-950 font-black text-xs px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md whitespace-nowrap">
+                    Recommandé Vendeuses
+                </div>
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-gold-400/20 text-gold-400 flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                    </div>
+                    <span class="text-xs font-bold text-gold-400 tracking-wider uppercase block mb-1">Le Best-Seller</span>
+                    <h3 class="text-2xl font-bold font-serif text-white mb-3">Sac Standard (50 Épis)</h3>
+                    <p class="text-stone-300 text-sm mb-6 leading-relaxed">
+                        Parfait pour les grilleuses de rue, les cantines et revendeuses du marché de Bignona.
+                    </p>
+                    <ul class="space-y-3 text-sm text-stone-300 mb-8">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-gold-400"></i> 50 épis calibrés NFT999</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-gold-400"></i> Remise sur volume incluse</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-gold-400"></i> Emballage sac jute/respirant</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="mb-6 pt-4 border-t border-brand-800">
+                        <span class="text-3xl font-extrabold gold-gradient-text">6 000 FCFA</span>
+                        <span class="text-xs text-stone-400 block mt-1">(Soit 120 FCFA / épi)</span>
+                    </div>
+                    <button onclick="orderProduct('Sac Standard 50 Épis', 6000, 1)" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-300 hover:to-amber-400 text-stone-950 font-extrabold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <span>Commander ce Sac</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card-equal bg-white dark:bg-brand-900/40 rounded-3xl p-8 border border-stone-200 dark:border-brand-800 shadow-xl hover:shadow-2xl transition-all duration-300 group hover:-translate-y-1">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-truck-ramp-box"></i>
+                    </div>
+                    <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase block mb-1">Gros & Banagbanas</span>
+                    <h3 class="text-2xl font-bold font-serif text-stone-900 dark:text-white mb-3">Sac XL Grossiste (100 Épis)</h3>
+                    <p class="text-stone-600 dark:text-stone-300 text-sm mb-6 leading-relaxed">
+                        Conçu pour les acheteurs professionnels et commerçants écoulant de grosses quantités.
+                    </p>
+                    <ul class="space-y-3 text-sm text-stone-600 dark:text-stone-300 mb-8">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-emerald-500"></i> 100 épis fraîchement récoltés</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-emerald-500"></i> Tarif le plus bas du marché</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-emerald-500"></i> Priorité de livraison matinée</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="mb-6 pt-4 border-t border-stone-100 dark:border-brand-800">
+                        <span class="text-3xl font-extrabold text-stone-900 dark:text-white">11 000 FCFA</span>
+                        <span class="text-xs text-stone-500 dark:text-stone-400 block mt-1">(Soit 110 FCFA / épi)</span>
+                    </div>
+                    <button onclick="orderProduct('Sac XL Grossiste 100 Épis', 11000, 1)" class="w-full bg-stone-900 dark:bg-brand-800 hover:bg-emerald-600 dark:hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Commander Sac Grossiste</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE PRICE CALCULATOR -->
+    <section id="calculateur" class="py-16 bg-stone-100 dark:bg-brand-950/80 border-y border-stone-200 dark:border-brand-800">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-card p-8 sm:p-12 rounded-3xl shadow-2xl border border-gold-500/30">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <span class="text-xs font-bold text-gold-500 dark:text-gold-400 uppercase tracking-widest block mb-2">Simulateur en Temps Réel</span>
+                    <h2 class="text-3xl font-bold font-serif text-stone-900 dark:text-white">Calculez le Prix de Votre Commande</h2>
+                    <p class="text-stone-600 dark:text-stone-300 text-sm mt-2">Ajustez la quantité d'épis souhaitée pour bénéficier automatiquement des réductions dégressives.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                    <div class="md:col-span-7 space-y-6">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label for="epis-range" class="font-bold text-stone-800 dark:text-stone-200">Nombre d'épis souhaités :</label>
+                                <span id="epis-count-display" class="text-2xl font-black text-emerald-600 dark:text-gold-400">50 Épis</span>
+                            </div>
+                            <input type="range" id="epis-range" min="10" max="500" step="5" value="50" class="w-full h-3 bg-stone-300 dark:bg-brand-900 rounded-lg appearance-none cursor-pointer accent-gold-500">
+                            <div class="flex justify-between text-xs text-stone-500 dark:text-stone-400 mt-1">
+                                <span>10 épis (Min)</span>
+                                <span>100 épis</span>
+                                <span>500 épis (Max)</span>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-white/50 dark:bg-brand-900/50 border border-stone-200 dark:border-brand-800 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-truck text-xl text-emerald-600 dark:text-gold-400"></i>
+                                <div>
+                                    <span class="font-semibold text-stone-900 dark:text-white text-sm block">Livraison à Domicile / Marché</span>
+                                    <span class="text-xs text-stone-500 dark:text-stone-400">Zone Bignona & Proches environs</span>
+                                </div>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="delivery-check" class="sr-only peer" onchange="calculateTotal()">
+                                <div class="w-11 h-6 bg-stone-300 peer-focus:outline-none rounded-full peer dark:bg-brand-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-5 bg-gradient-to-br from-brand-900 to-brand-950 p-6 rounded-2xl border border-gold-500/40 text-white text-center space-y-4">
+                        <span class="text-xs uppercase tracking-widest text-stone-400 block">Total Estimé</span>
+                        <div class="text-4xl font-extrabold gold-gradient-text" id="total-price-display">
+                            6 000 FCFA
+                        </div>
+                        <div class="text-xs text-stone-300 space-y-1">
+                            <div class="flex justify-between">
+                                <span>Prix unitaire moyen :</span>
+                                <span class="font-semibold" id="unit-price-display">120 FCFA</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Frais de livraison :</span>
+                                <span class="font-semibold" id="delivery-price-display">0 FCFA</span>
+                            </div>
+                        </div>
+                        <button onclick="sendCalculatedOrder()" class="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-xl"></i>
+                            <span>Commander ce Lot</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NFT999 MATURITY CALENDAR SECTION -->
+    <section id="maturite" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+            <span class="text-xs font-bold uppercase tracking-widest text-gold-600 dark:text-gold-400 bg-gold-100 dark:bg-gold-500/10 px-4 py-1.5 rounded-full inline-block border border-gold-300 dark:border-gold-500/30">
+                Suivi Agronomique
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold font-serif text-stone-900 dark:text-white">
+                Calendrier de Maturité Variété NFT999
+            </h2>
+            <p class="text-stone-600 dark:text-stone-300">
+                Comprendre les phases clés pour récolter le maïs au moment où les grains sont les plus sucrés et gorgés de lait.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+            <div class="bg-white dark:bg-brand-900/30 p-8 rounded-3xl border border-stone-200 dark:border-brand-800 relative">
+                <div class="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 font-bold flex items-center justify-center text-lg mb-6 border border-emerald-500/30">J-0</div>
+                <h3 class="text-xl font-bold font-serif text-stone-900 dark:text-white mb-2">Phase de Semis</h3>
+                <p class="text-stone-600 dark:text-stone-300 text-sm leading-relaxed mb-4">
+                    Mise en terre des semences NFT999 à Bignona. Germination rapide et développement foliaire vigoureux.
+                </p>
+                <div class="text-xs font-semibold text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                    <i class="fa-solid fa-seedling text-emerald-500"></i> Parcelle 1 (18 Juillet) & Parcelle 2 (29-31 Juil)
+                </div>
+            </div>
+            <div class="bg-white dark:bg-brand-900/30 p-8 rounded-3xl border border-stone-200 dark:border-brand-800 relative">
+                <div class="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 font-bold flex items-center justify-center text-lg mb-6 border border-amber-500/30">J-45</div>
+                <h3 class="text-xl font-bold font-serif text-stone-900 dark:text-white mb-2">Stade Laiteux</h3>
+                <p class="text-stone-600 dark:text-stone-300 text-sm leading-relaxed mb-4">
+                    Les grains se remplissent de lait sucré. C'est le moment idéal pour la récolte du maïs frais.
+                </p>
+                <div class="text-xs font-semibold text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                    <i class="fa-solid fa-droplet text-amber-500"></i> Récolte douce et sucrée
+                </div>
+            </div>
+            <div class="bg-white dark:bg-brand-900/30 p-8 rounded-3xl border border-stone-200 dark:border-brand-800 relative">
+                <div class="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-950 text-rose-600 dark:text-rose-400 font-bold flex items-center justify-center text-lg mb-6 border border-rose-500/30">J-75</div>
+                <h3 class="text-xl font-bold font-serif text-stone-900 dark:text-white mb-2">Maturité Complète</h3>
+                <p class="text-stone-600 dark:text-stone-300 text-sm leading-relaxed mb-4">
+                    Le maïs devient plus ferme, parfait pour la consommation en épis grillés ou bouillis.
+                </p>
+                <div class="text-xs font-semibold text-stone-500 dark:text-stone-400 flex items-center gap-2">
+                    <i class="fa-solid fa-fire text-rose-500"></i> Idéal pour grillades
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FARMER DASHBOARD -->
+    <section id="dashboard" class="py-20 bg-stone-900 text-white border-t border-gold-500/20 relative overflow-hidden">
+        <div id="dashboard-lock-overlay" class="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
+            <div class="glass-card p-8 sm:p-12 rounded-3xl border border-gold-500/30 shadow-2xl relative overflow-hidden">
+                <div class="w-16 h-16 rounded-2xl bg-gold-500/20 text-gold-400 flex items-center justify-center text-3xl mx-auto mb-6 border border-gold-500/40">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <h2 class="text-3xl font-extrabold font-serif text-white mb-2">Espace Administration Agriculteur</h2>
+                <p class="text-stone-300 text-sm max-w-lg mx-auto mb-8">
+                    Cet espace est réservé au suivi de stock, à la comptabilité et à la gestion des parcelles de Bignona.
+                </p>
+
+                <div class="max-w-xs mx-auto space-y-4">
+                    <div class="relative">
+                        <input type="password" id="pin-input" maxlength="4" placeholder="Code PIN (****)" class="w-full bg-brand-950 border-2 border-gold-500/40 rounded-2xl px-4 py-3.5 text-center text-2xl tracking-[0.5em] font-mono text-gold-400 focus:outline-none focus:border-gold-400 shadow-inner placeholder:text-stone-600 placeholder:tracking-normal placeholder:font-sans placeholder:text-sm" onkeyup="if(event.key === 'Enter') verifyPin()">
+                    </div>
+                    <button onclick="verifyPin()" class="w-full bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-300 hover:to-amber-400 text-stone-950 font-bold py-3.5 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-key"></i>
+                        <span>Déverrouiller le Dashboard</span>
+                    </button>
+                    <p id="pin-error-msg" class="text-rose-400 text-xs font-semibold hidden animate-bounce">
+                        <i class="fa-solid fa-circle-exclamation mr-1"></i> Code PIN incorrect. Réessayez.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboard-content" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Header + Actions Export/Import -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4 bg-brand-950/80 p-6 rounded-3xl border border-gold-500/30">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2">
+                        <i class="fa-solid fa-shield-check"></i> Espace Sécurisé Actif (Code 0202 Validé)
+                    </div>
+                    <h2 class="text-3xl font-extrabold font-serif text-white">Tableau de Bord GL & Suivi des Parcelles</h2>
+                    <p class="text-stone-400 text-sm">Gestion du stock en direct, comptabilité et récoltes de Bignona.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="toggleAddSaleModal()" class="bg-gold-500 hover:bg-gold-400 text-stone-950 font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 text-sm shadow-lg shadow-gold-500/20">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Enregistrer Vente</span>
+                    </button>
+                    <button onclick="exportData('json')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-2 text-sm" title="Télécharger sauvegarde JSON">
+                        <i class="fa-solid fa-download"></i>
+                        <span class="hidden sm:inline">JSON</span>
+                    </button>
+                    <button onclick="exportData('csv')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-2 text-sm" title="Télécharger sauvegarde CSV">
+                        <i class="fa-solid fa-file-csv"></i>
+                        <span class="hidden sm:inline">CSV</span>
+                    </button>
+                    <button onclick="document.getElementById('import-file').click()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-2 text-sm" title="Importer une sauvegarde">
+                        <i class="fa-solid fa-upload"></i>
+                        <span class="hidden sm:inline">Import</span>
+                    </button>
+                    <input type="file" id="import-file" accept=".json" class="hidden" onchange="importData(event)">
+                    <button onclick="lockDashboard()" class="bg-stone-800 hover:bg-rose-900/60 text-stone-300 hover:text-rose-300 border border-stone-700 px-3.5 py-2.5 rounded-xl text-sm transition-all" title="Verrouiller">
+                        <i class="fa-solid fa-lock"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Info sauvegarde -->
+            <div class="mb-6 flex items-center justify-between gap-3 bg-blue-500/10 border border-blue-500/30 text-blue-200 px-4 py-3 rounded-2xl text-xs">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-database"></i>
+                    <span>Sauvegarde automatique locale (localStorage) active. Dernière mise à jour : <strong id="last-save-display">—</strong></span>
+                </div>
+                <button onclick="resetData()" class="text-rose-300 hover:text-rose-200 font-semibold underline">
+                    <i class="fa-solid fa-trash-can mr-1"></i>Réinitialiser
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="bg-brand-950 p-6 rounded-2xl border border-brand-800">
+                    <div class="flex justify-between items-center text-stone-400 mb-2 text-sm">
+                        <span>Revenu Total</span>
+                        <i class="fa-solid fa-wallet text-gold-400"></i>
+                    </div>
+                    <span id="kpi-revenue" class="kpi-value text-3xl font-black text-gold-400 font-serif">0 FCFA</span>
+                    <span class="text-xs text-emerald-400 block mt-2"><i class="fa-solid fa-arrow-trend-up"></i> Mise à jour en direct</span>
+                </div>
+                <div class="bg-brand-950 p-6 rounded-2xl border border-brand-800">
+                    <div class="flex justify-between items-center text-stone-400 mb-2 text-sm">
+                        <span>Épis Vendus</span>
+                        <i class="fa-solid fa-cubes text-emerald-400"></i>
+                    </div>
+                    <span id="kpi-epis" class="kpi-value text-3xl font-black text-white font-serif">0 Épis</span>
+                    <span class="text-xs text-stone-400 block mt-2">Sacs 50 & XL combinés</span>
+                </div>
+                <div class="bg-brand-950 p-6 rounded-2xl border border-brand-800">
+                    <div class="flex justify-between items-center text-stone-400 mb-2 text-sm">
+                        <span>Stock Dispo Estimé</span>
+                        <i class="fa-solid fa-warehouse text-amber-400"></i>
+                    </div>
+                    <span id="kpi-stock" class="kpi-value text-3xl font-black text-amber-400 font-serif">1 180 Épis</span>
+                    <span class="text-xs text-stone-400 block mt-2">Parcelle 2 en récolte</span>
+                </div>
+                <div class="bg-brand-950 p-6 rounded-2xl border border-brand-800">
+                    <div class="flex justify-between items-center text-stone-400 mb-2 text-sm">
+                        <span>Transactions</span>
+                        <i class="fa-solid fa-receipt text-blue-400"></i>
+                    </div>
+                    <span id="kpi-count" class="kpi-value text-3xl font-black text-white font-serif">0</span>
+                    <span class="text-xs text-stone-400 block mt-2">Enregistrements totaux</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-5 bg-brand-950 p-6 rounded-3xl border border-brand-800 space-y-6">
+                    <h3 class="text-lg font-bold font-serif text-white flex items-center gap-2">
+                        <i class="fa-solid fa-map-location-dot text-gold-400"></i> Suivi des Parcelles
+                    </h3>
+                    <div class="p-4 rounded-xl bg-brand-900/60 border border-brand-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-sm text-gold-300">Parcelle 1 (Semis 18 Juillet)</span>
+                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Fin de Récolte Frais</span>
+                        </div>
+                        <p class="text-xs text-stone-400">Épis très avancés. Écoulement quotidien pour les grilleuses du marché.</p>
+                        <div class="w-full bg-brand-950 rounded-full h-2 overflow-hidden">
+                            <div class="bg-gold-400 h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-brand-900/60 border border-brand-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-sm text-emerald-400">Parcelle 2 (Semis 29-31 Juillet)</span>
+                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Plein Stade Laiteux</span>
+                        </div>
+                        <p class="text-xs text-stone-400">Stade optimal NFT999. Fournit les grosses commandes et sacs XL 100 épis.</p>
+                        <div class="w-full bg-brand-950 rounded-full h-2 overflow-hidden">
+                            <div class="bg-emerald-500 h-2 rounded-full" style="width: 45%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 bg-brand-950 p-6 rounded-3xl border border-brand-800">
+                    <h3 class="text-lg font-bold font-serif text-white mb-4 flex items-center justify-between">
+                        <span><i class="fa-solid fa-receipt text-gold-400 mr-2"></i>Dernières Transactions</span>
+                        <span class="text-xs font-normal text-stone-400">Registre privé</span>
+                    </h3>
+                    <div class="overflow-x-auto max-h-96 overflow-y-auto">
+                        <table class="w-full text-left text-sm text-stone-300">
+                            <thead class="text-xs uppercase bg-brand-900 text-gold-400 sticky top-0">
+                                <tr>
+                                    <th class="p-3 rounded-l-lg">Date</th>
+                                    <th class="p-3">Acheteur</th>
+                                    <th class="p-3">Produit</th>
+                                    <th class="p-3">Montant</th>
+                                    <th class="p-3">Statut</th>
+                                    <th class="p-3 rounded-r-lg text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sales-table-body" class="divide-y divide-brand-900"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+            <span class="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-gold-400 bg-emerald-100 dark:bg-emerald-950/80 px-4 py-1.5 rounded-full inline-block">
+                Avis du Marché
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold font-serif text-stone-900 dark:text-white">
+                La Confiance des Vendeuses de Bignona
+            </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white dark:bg-brand-900/40 p-8 rounded-3xl border border-stone-200 dark:border-brand-800 shadow-lg">
+                <div class="flex text-gold-400 gap-1 mb-4">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="text-stone-600 dark:text-stone-300 text-sm italic mb-6">
+                    "Le maïs NFT999 de Corn Tech est extrêmement tendre. Mes clientes pour le maïs grillé à la gare routière en redemandent tous les soirs !"
+                </p>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 font-bold flex items-center justify-center">A</div>
+                    <div>
+                        <span class="font-bold text-stone-900 dark:text-white text-sm block">Awa D.</span>
+                        <span class="text-xs text-stone-500 dark:text-stone-400">Grilleuse • Gare Routière Bignona</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-brand-900/40 p-8 rounded-3xl border border-stone-200 dark:border-brand-800 shadow-lg">
+                <div class="flex text-gold-400 gap-1 mb-4">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="text-stone-600 dark:text-stone-300 text-sm italic mb-6">
+                    "Commandé 2 sacs XL de 100 épis par WhatsApp à 7h, livrés à 8h30 au marché central. Service très professionnel et maïs très sucré."
+                </p>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center">M</div>
+                    <div>
+                        <span class="font-bold text-stone-900 dark:text-white text-sm block">Moussa S.</span>
+                        <span class="text-xs text-stone-500 dark:text-stone-400">Commerçant • Grand Marché</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-brand-900/40 p-8 rounded-3xl border border-stone-200 dark:border-brand-800 shadow-lg">
+                <div class="flex text-gold-400 gap-1 mb-4">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="text-stone-600 dark:text-stone-300 text-sm italic mb-6">
+                    "C'est la première fois que je vois une ferme maïs aussi organisée avec un simulateur de prix clair. La qualité est irréprochable."
+                </p>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 font-bold flex items-center justify-center">F</div>
+                    <div>
+                        <span class="font-bold text-stone-900 dark:text-white text-sm block">Fatou K.</span>
+                        <span class="text-xs text-stone-500 dark:text-stone-400">Particulier • Quartier Tenghory</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-950 border-t border-gold-500/20 text-stone-400 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div class="md:col-span-6 space-y-3 text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-gold-400 flex items-center justify-center text-stone-950 font-bold">
+                        <i class="fa-solid fa-wheat-awn"></i>
+                    </div>
+                    <span class="text-lg font-bold font-serif text-white gold-gradient-text">CORN TECH BIGNONA</span>
+                </div>
+                <p class="text-xs text-stone-400 max-w-md">
+                    Production et distribution agrotech de maïs frais doux (NFT999). Cultivé avec soin dans les terroirs de Bignona, Casamance, Sénégal.
+                </p>
+            </div>
+            <div class="md:col-span-6 flex flex-col sm:flex-row items-center justify-center md:justify-end gap-6 text-sm">
+                <div class="text-center sm:text-right">
+                    <span class="text-xs text-stone-500 block">Commandes WhatsApp & Téléphone</span>
+                    <span class="text-gold-400 font-bold block">+221 77 686 86 25</span>
+                    <span class="text-gold-400 font-bold block">+221 78 594 85 94</span>
+                </div>
+                <button onclick="openWhatsAppModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-colors flex items-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Contact Direct
+                </button>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto border-t border-brand-900 mt-8 pt-6 text-center text-xs text-stone-600">
+            © 2026 Corn Tech Bignona. Tous droits réservés. Développé pour la valorisation agricole locale.
+        </div>
+    </footer>
+
+    <!-- WHATSAPP MODAL -->
+    <div id="whatsapp-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-brand-950 border border-gold-500/40 rounded-3xl max-w-md w-full p-6 text-white space-y-6 relative shadow-2xl">
+            <button onclick="closeWhatsAppModal()" class="absolute top-4 right-4 text-stone-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="text-center space-y-2">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mx-auto">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </div>
+                <h3 class="text-2xl font-bold font-serif">Choisir la Ligne WhatsApp</h3>
+                <p class="text-stone-300 text-xs">Sélectionnez votre numéro préféré pour envoyer directement votre commande.</p>
+            </div>
+            <div class="space-y-3">
+                <button onclick="redirectToWhatsApp('221776868625')" class="w-full bg-brand-900 hover:bg-emerald-900/60 border border-gold-500/30 p-4 rounded-2xl flex items-center justify-between group transition-all">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-phone text-gold-400 text-lg"></i>
+                        <div class="text-left">
+                            <span class="font-bold text-white block">Ligne 1: +221 77 686 86 25</span>
+                            <span class="text-xs text-stone-400">Commandes Rapides & Sacs</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-stone-500 group-hover:text-gold-400"></i>
+                </button>
+                <button onclick="redirectToWhatsApp('221785948594')" class="w-full bg-brand-900 hover:bg-emerald-900/60 border border-gold-500/30 p-4 rounded-2xl flex items-center justify-between group transition-all">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-phone text-gold-400 text-lg"></i>
+                        <div class="text-left">
+                            <span class="font-bold text-white block">Ligne 2: +221 78 594 85 94</span>
+                            <span class="text-xs text-stone-400">Service Gros & Banagbanas</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-stone-500 group-hover:text-gold-400"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD SALE MODAL -->
+    <div id="add-sale-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-brand-950 border border-gold-500/40 rounded-3xl max-w-md w-full p-6 text-white space-y-6 relative shadow-2xl">
+            <button onclick="toggleAddSaleModal()" class="absolute top-4 right-4 text-stone-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="text-center space-y-2">
+                <h3 class="text-2xl font-bold font-serif text-gold-400">Enregistrer une Vente</h3>
+                <p class="text-stone-300 text-xs">Mise à jour directe du registre comptable de la ferme.</p>
+            </div>
+            <form id="sale-form" onsubmit="handleSaleSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="text-xs text-stone-300 block mb-1">Nom du Client / Marchande</label>
+                    <input type="text" id="client-name" required placeholder="Ex: Diarra - Gare Routière" class="w-full bg-brand-900 border border-brand-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-gold-400 focus:outline-none">
+                </div>
+                <div>
+                    <label class="text-xs text-stone-300 block mb-1">Type de Produit</label>
+                    <select id="product-type" class="w-full bg-brand-900 border border-brand-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-gold-400 focus:outline-none">
+                        <option value="Sac Standard (50 épis)">Sac Standard (50 épis)</option>
+                        <option value="Sac XL (100 épis)">Sac XL (100 épis)</option>
+                        <option value="Épis au détail">Épis au détail</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs text-stone-300 block mb-1">Nombre d'épis</label>
+                        <input type="number" id="sale-epis" required value="50" min="10" class="w-full bg-brand-900 border border-brand-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-gold-400 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="text-xs text-stone-300 block mb-1">Prix Total (FCFA)</label>
+                        <input type="number" id="sale-amount" required value="6000" min="500" class="w-full bg-brand-900 border border-brand-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-gold-400 focus:outline-none">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-gold-500 hover:bg-gold-400 text-stone-950 font-bold py-3.5 rounded-xl shadow-lg transition-all">
+                    Valider la Vente
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toast" class="toast"></div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // ============ CONSTANTES & STORAGE ============
+        const STORAGE_KEY = 'corntech_bignona_data_v1';
+        const SECRET_PIN = "0202";
+
+        let isDashboardUnlocked = false;
+        let pendingMessage = "Bonjour Corn Tech Bignona, je souhaite commander du maïs frais NFT999.";
+
+        // État par défaut
+        const defaultState = {
+            totalRevenue: 145000,
+            totalEpisSold: 820,
+            sales: [
+                { id: 1, date: "2026-01-10", client: "Awa D. (Grilleuse)", product: "Sac Standard (50 épis)", amount: 6000, epis: 50, status: "Payé" },
+                { id: 2, date: "2026-01-11", client: "Moussa S. (Marché)", product: "Sac XL (100 épis)", amount: 11000, epis: 100, status: "Payé" },
+                { id: 3, date: "2026-01-12", client: "Gargote Nema", product: "Épis au détail", amount: 4500, epis: 30, status: "Livré" },
+                { id: 4, date: "2026-01-13", client: "Fatou K.", product: "Sac Standard (50 épis)", amount: 6000, epis: 50, status: "Payé" }
+            ],
+            lastSaved: null
+        };
+
+        let appState = { ...defaultState, sales: [...defaultState.sales] };
+
+        // ============ PERSISTENCE ============
+        function saveState() {
+            try {
+                appState.lastSaved = new Date().toISOString();
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+                updateLastSaveDisplay();
+            } catch (e) {
+                showToast("Erreur de sauvegarde locale : " + e.message, "error");
+            }
+        }
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    // Recalculer cohérence
+                    appState = {
+                        ...defaultState,
+                        ...parsed,
+                        sales: Array.isArray(parsed.sales) ? parsed.sales : defaultState.sales
+                    };
+                    // Recalculer revenus / épis à partir des ventes (source de vérité)
+                    recalcTotals();
+                }
+                updateLastSaveDisplay();
+            } catch (e) {
+                console.warn("Impossible de charger la sauvegarde :", e);
+                appState = { ...defaultState, sales: [...defaultState.sales] };
+            }
+        }
+
+        function recalcTotals() {
+            appState.totalRevenue = appState.sales.reduce((s, v) => s + (Number(v.amount) || 0), 0);
+            appState.totalEpisSold = appState.sales.reduce((s, v) => s + (Number(v.epis) || 0), 0);
+        }
+
+        function updateLastSaveDisplay() {
+            const el = document.getElementById('last-save-display');
+            if (!el) return;
+            if (appState.lastSaved) {
+                const d = new Date(appState.lastSaved);
+                el.textContent = d.toLocaleString('fr-FR');
+            } else {
+                el.textContent = "—";
+            }
+        }
+
+        function resetData() {
+            if (!confirm("⚠️ Toutes les données enregistrées seront définitivement effacées. Continuer ?")) return;
+            appState = { ...defaultState, sales: [...defaultState.sales], lastSaved: null };
+            localStorage.removeItem(STORAGE_KEY);
+            recalcTotals();
+            saveState();
+            renderSalesTable();
+            updateKPIs();
+            showToast("Données réinitialisées", "info");
+        }
+
+        // ============ EXPORT / IMPORT ============
+        function exportData(format = 'json') {
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+            if (format === 'json') {
+                const dataStr = JSON.stringify(appState, null, 2);
+                downloadFile(dataStr, `corntech-sauvegarde-${timestamp}.json`, 'application/json');
+            } else if (format === 'csv') {
+                const headers = ['Date', 'Client', 'Produit', 'Épis', 'Montant (FCFA)', 'Statut'];
+                const rows = appState.sales.map(s => [
+                    s.date || '',
+                    escapeCSV(s.client || ''),
+                    escapeCSV(s.product || ''),
+                    s.epis || 0,
+                    s.amount || 0,
+                    escapeCSV(s.status || '')
+                ]);
+                // Ajouter ligne récap
+                rows.push([]);
+                rows.push(['TOTAL', '', '', appState.totalEpisSold, appState.totalRevenue, '']);
+                const csv = [headers, ...rows].map(r => r.join(';')).join('\n');
+                downloadFile("\uFEFF" + csv, `corntech-ventes-${timestamp}.csv`, 'text/csv;charset=utf-8');
+            }
+            showToast(`Export ${format.toUpperCase()} téléchargé`, "success");
+        }
+
+        function escapeCSV(val) {
+            const s = String(val);
+            if (s.includes(';') || s.includes('"') || s.includes('\n')) {
+                return '"' + s.replace(/"/g, '""') + '"';
+            }
+            return s;
+        }
+
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (!imported || !Array.isArray(imported.sales)) {
+                        throw new Error("Format de fichier invalide (tableau 'sales' manquant).");
+                    }
+                    if (!confirm(`Importer ${imported.sales.length} transactions ? Les données actuelles seront remplacées.`)) return;
+                    appState = {
+                        ...defaultState,
+                        ...imported,
+                        sales: imported.sales
+                    };
+                    recalcTotals();
+                    saveState();
+                    renderSalesTable();
+                    updateKPIs();
+                    showToast(`Import réussi : ${imported.sales.length} transactions`, "success");
+                } catch (err) {
+                    showToast("Erreur d'import : " + err.message, "error");
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // ============ TOAST ============
+        let toastTimeout;
+        function showToast(msg, type = 'info') {
+            const t = document.getElementById('toast');
+            t.className = `toast show ${type}`;
+            t.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-info'}"></i> ${msg}`;
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => t.classList.remove('show'), 3200);
+        }
+
+        // ============ AUTH ============
+        function requestPinUnlock() {
+            document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth' });
+            if (!isDashboardUnlocked) {
+                setTimeout(() => document.getElementById('pin-input').focus(), 500);
+            }
+        }
+
+        function verifyPin() {
+            const inputField = document.getElementById('pin-input');
+            const errorMsg = document.getElementById('pin-error-msg');
+            const inputPin = inputField.value.trim();
+
+            if (inputPin === SECRET_PIN) {
+                isDashboardUnlocked = true;
+                errorMsg.classList.add('hidden');
+                document.getElementById('dashboard-lock-overlay').classList.add('hidden');
+                document.getElementById('dashboard-content').classList.remove('hidden');
+
+                document.getElementById('nav-lock-icon').className = "fa-solid fa-lock-open text-xs text-emerald-400";
+                document.getElementById('mobile-lock-icon').className = "fa-solid fa-lock-open text-emerald-400 mr-2";
+                document.getElementById('nav-dash-label').innerText = "Dashboard (Déverrouillé)";
+
+                renderSalesTable();
+                updateKPIs();
+                updateLastSaveDisplay();
+                showToast("Dashboard déverrouillé", "success");
+            } else {
+                errorMsg.classList.remove('hidden');
+                inputField.value = '';
+                inputField.focus();
+            }
+        }
+
+        function lockDashboard() {
+            isDashboardUnlocked = false;
+            document.getElementById('dashboard-lock-overlay').classList.remove('hidden');
+            document.getElementById('dashboard-content').classList.add('hidden');
+            document.getElementById('pin-input').value = '';
+            document.getElementById('nav-lock-icon').className = "fa-solid fa-lock text-xs";
+            document.getElementById('mobile-lock-icon').className = "fa-solid fa-lock mr-2";
+            document.getElementById('nav-dash-label').innerText = "Espace Agriculteur";
+        }
+
+        // ============ MENU MOBILE ============
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // ============ CALCULATEUR ============
+        const rangeInput = document.getElementById('epis-range');
+        if (rangeInput) rangeInput.addEventListener('input', calculateTotal);
+
+        function calculateTotal() {
+            const epis = parseInt(document.getElementById('epis-range').value);
+            const isDelivery = document.getElementById('delivery-check').checked;
+
+            document.getElementById('epis-count-display').innerText = `${epis} Épis`;
+
+            let unitPrice = 150;
+            if (epis >= 100) unitPrice = 110;
+            else if (epis >= 50) unitPrice = 120;
+
+            let subtotal = epis * unitPrice;
+            let deliveryFee = isDelivery ? 1000 : 0;
+            let total = subtotal + deliveryFee;
+
+            document.getElementById('total-price-display').innerText = `${total.toLocaleString('fr-FR')} FCFA`;
+            document.getElementById('unit-price-display').innerText = `${unitPrice} FCFA`;
+            document.getElementById('delivery-price-display').innerText = `${deliveryFee} FCFA`;
+
+            pendingMessage = `Bonjour Corn Tech Bignona, je souhaite simuler/commander ${epis} épis de maïs frais. Total estimé: ${total.toLocaleString('fr-FR')} FCFA (${isDelivery ? 'Avec livraison' : 'Sans livraison'}).`;
+        }
+
+        function scrollToOffers() {
+            document.getElementById('produits').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function orderProduct(productName, price, minQty) {
+            pendingMessage = `Bonjour Corn Tech Bignona, je souhaite commander l'offre: *${productName}* à ${price.toLocaleString('fr-FR')} FCFA. Merci de me confirmer la disponibilité.`;
+            openWhatsAppModal();
+        }
+
+        function sendCalculatedOrder() {
+            calculateTotal();
+            openWhatsAppModal();
+        }
+
+        // ============ WHATSAPP ============
+        function openWhatsAppModal() { document.getElementById('whatsapp-modal').classList.remove('hidden'); }
+        function closeWhatsAppModal() { document.getElementById('whatsapp-modal').classList.add('hidden'); }
+        function redirectToWhatsApp(phone) {
+            const encoded = encodeURIComponent(pendingMessage);
+            window.open(`https://wa.me/${phone}?text=${encoded}`, '_blank');
+            closeWhatsAppModal();
+        }
+
+        // ============ DASHBOARD - VENTES ============
+        function toggleAddSaleModal() { document.getElementById('add-sale-modal').classList.toggle('hidden'); }
+
+        function handleSaleSubmit(e) {
+            e.preventDefault();
+            const client = document.getElementById('client-name').value.trim();
+            const product = document.getElementById('product-type').value;
+            const epis = parseInt(document.getElementById('sale-epis').value);
+            const amount = parseInt(document.getElementById('sale-amount').value);
+
+            if (!client || !epis || !amount) {
+                showToast("Champs invalides", "error");
+                return;
+            }
+
+            appState.sales.unshift({
+                id: Date.now(),
+                date: new Date().toISOString().slice(0, 10),
+                client,
+                product,
+                epis,
+                amount,
+                status: "Payé"
+            });
+
+            recalcTotals();
+            saveState();
+            renderSalesTable();
+            updateKPIs();
+            toggleAddSaleModal();
+            document.getElementById('sale-form').reset();
+            showToast("Vente enregistrée & sauvegardée", "success");
+        }
+
+        function deleteSale(id) {
+            if (!confirm("Supprimer cette transaction ?")) return;
+            appState.sales = appState.sales.filter(s => s.id !== id);
+            recalcTotals();
+            saveState();
+            renderSalesTable();
+            updateKPIs();
+            showToast("Transaction supprimée", "info");
+        }
+
+        function updateKPIs() {
+            document.getElementById('kpi-revenue').innerText = `${appState.totalRevenue.toLocaleString('fr-FR')} FCFA`;
+            document.getElementById('kpi-epis').innerText = `${appState.totalEpisSold.toLocaleString('fr-FR')} Épis`;
+            document.getElementById('kpi-count').innerText = appState.sales.length;
+        }
+
+        function renderSalesTable() {
+            const tbody = document.getElementById('sales-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            if (appState.sales.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-stone-500 italic">Aucune transaction enregistrée.</td></tr>`;
+                return;
+            }
+
+            appState.sales.forEach(sale => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-brand-900/40 transition-colors";
+                tr.innerHTML = `
+                    <td class="p-3 text-stone-400 text-xs">${sale.date || '—'}</td>
+                    <td class="p-3 font-semibold text-white">${sale.client}</td>
+                    <td class="p-3 text-stone-300">${sale.product}</td>
+                    <td class="p-3 font-bold text-gold-400">${Number(sale.amount).toLocaleString('fr-FR')} FCFA</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">${sale.status}</span></td>
+                    <td class="p-3 text-center">
+                        <button onclick="deleteSale(${sale.id})" class="text-rose-400 hover:text-rose-300 p-1.5" title="Supprimer">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ============ INIT ============
+        window.addEventListener('load', () => {
+            loadState();
+            calculateTotal();
+            // Sauvegarde de sécurité au cas où la structure initiale n'existerait pas
+            if (!localStorage.getItem(STORAGE_KEY)) saveState();
+        });
+    </script>
+</body>
+</html>
